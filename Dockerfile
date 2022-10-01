@@ -1,4 +1,4 @@
-FROM node:18-alpine As development
+FROM node:lts-bullseye-slim As development
 WORKDIR /usr/src/app
 COPY --chown=node:node package*.json ./
 RUN npm ci
@@ -6,7 +6,7 @@ COPY --chown=node:node . .
 USER node
 
 
-FROM node:18-alpine As build
+FROM node:lts-bullseye-slim As build
 WORKDIR /usr/src/app
 COPY --chown=node:node package*.json ./
 COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
@@ -17,7 +17,7 @@ RUN npm ci --only=production && npm cache clean --force
 USER node
 
 
-FROM node:18-alpine As production
+FROM node:lts-bullseye-slim As production
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 CMD [ "node", "dist/main.js" ]
