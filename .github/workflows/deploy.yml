@@ -9,13 +9,15 @@ jobs:
       IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:latest
       PROFILE_ACTIVE: prod
       APP_NAME: ${{ secrets.GCP_APP_NAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      ENV_PROD: ${{ secrets.ENV_PROD }}
     permissions:
       contents: 'read'
       id-token: 'write'
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@v2'
-        run: 'cat .env >> $GITHUB_ENV'
+      - run: 'echo $ENV_PROD >> $GITHUB_ENV'
       - name: 'Auth'
         uses: 'google-github-actions/auth@v0'
         with:
@@ -30,13 +32,13 @@ jobs:
         run: 'docker run -d -p 80:80 $IMAGE_NAME'
       - name: 'Push Docker image'
         run: 'docker push $IMAGE_NAME'
-      - name: Deploy
+      - name: 'Deploy'
         run: |-
           gcloud compute instances update-container ${{ secrets.GCP_APP_NAME }} \
             --zone ${{ secrets.INSTANCE_ZONE}} \
-            --container-image $IMAGE_NAME
-            --container-env POSTGRES_HOST=$POSTGRES_HOST
-            --container-env POSTGRES_PORT=POSTGRES_PORT
-            --container-env POSTGRES_USER=$POSTGRES_USER
-            --container-env POSTGRES_DB=$POSTGRES_DB
-            --container-env POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
+            --container-image $IMAGE_NAME \
+            --container-env POSTGRES_HOST=$POSTGRES_HOST \
+            --container-env POSTGRES_PORT=$POSTGRES_PORT \
+            --container-env POSTGRES_USER=$POSTGRES_USER \
+            --container-env POSTGRES_DB=$POSTGRES_DB \
+            --container-env POSTGRES_PASSWORD=$DB_PASSWORD
