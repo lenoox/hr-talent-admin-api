@@ -4,21 +4,23 @@ jobs:
   deploy:
     name: 'Deploy hr-talent-admin-api'
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/build'
+    if: github.ref == 'refs/heads/develop'
     env:
       IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:latest
       PROFILE_ACTIVE: prod
       APP_NAME: ${{ secrets.GCP_APP_NAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      ENV_PROD: ${{ secrets.ENV_PROD }}
       INSTANCE_ZONE: ${{ secrets.INSTANCE_ZONE}}
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
     permissions:
       contents: 'read'
       id-token: 'write'
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@v2'
-      - run: 'echo $ENV_PROD >> $GITHUB_ENV'
       - name: 'Auth'
         uses: 'google-github-actions/auth@v0'
         with:
@@ -36,10 +38,10 @@ jobs:
       - name: 'Deploy'
         run: |
           gcloud compute instances update-container $APP_NAME \
-            --zone $INSTANCE_ZONE \
-            --container-image $IMAGE_NAME \
-            --container-env POSTGRES_HOST=$POSTGRES_HOST \
-            --container-env POSTGRES_PORT=$POSTGRES_PORT \
-            --container-env POSTGRES_USER=$POSTGRES_USER \
-            --container-env POSTGRES_DB=$POSTGRES_DB \
-            --container-env POSTGRES_PASSWORD=$DB_PASSWORD
+          --zone $INSTANCE_ZONE \
+          --container-image $IMAGE_NAME \
+          --container-env POSTGRES_HOST="$POSTGRES_HOST" \
+          --container-env POSTGRES_PORT="$POSTGRES_PORT" \
+          --container-env POSTGRES_USER="$POSTGRES_USER" \
+          --container-env POSTGRES_DB="$POSTGRES_DB" \
+          --container-env POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
