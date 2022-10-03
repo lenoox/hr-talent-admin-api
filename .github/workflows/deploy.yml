@@ -11,6 +11,7 @@ jobs:
       APP_NAME: ${{ secrets.GCP_APP_NAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       ENV_PROD: ${{ secrets.ENV_PROD }}
+      INSTANCE_ZONE: ${{ secrets.INSTANCE_ZONE}}
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -33,9 +34,9 @@ jobs:
       - name: 'Push Docker image'
         run: 'docker push $IMAGE_NAME'
       - name: 'Deploy'
-        run: |-
-          gcloud compute instances update-container ${{ secrets.GCP_APP_NAME }} \
-            --zone ${{ secrets.INSTANCE_ZONE}} \
+        run: |
+          gcloud compute instances update-container $APP_NAME \
+            --zone $INSTANCE_ZONE \
             --container-image $IMAGE_NAME \
             --container-env POSTGRES_HOST=$POSTGRES_HOST \
             --container-env POSTGRES_PORT=$POSTGRES_PORT \
