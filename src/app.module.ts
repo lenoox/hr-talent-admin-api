@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {ConfigModule, ConfigService} from "@nestjs/config";
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { JobOffersModule } from './models/job-offers/job-offers.module';
+import {TypeOrmModule} from "@nestjs/typeorm";
 
 @Module({
   imports: [
-      ConfigModule.forRoot(),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -23,6 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         //autoLoadEntities: true,
       }),
     }),
+    JobOffersModule
   ],
   controllers: [AppController],
   providers: [AppService],
