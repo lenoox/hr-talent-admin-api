@@ -2,16 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {ConfigModule, ConfigService} from "@nestjs/config";
-import { JobOffersModule } from './models/job-offers/job-offers.module';
-import {TypeOrmModule} from "@nestjs/typeorm";
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+      ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule.forRoot({
-        isGlobal: true,
-      })],
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
@@ -26,7 +23,6 @@ import {TypeOrmModule} from "@nestjs/typeorm";
         //autoLoadEntities: true,
       }),
     }),
-    JobOffersModule
   ],
   controllers: [AppController],
   providers: [AppService],
