@@ -9,7 +9,9 @@ import {TypeOrmModule} from "@nestjs/typeorm";
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule.forRoot({
+        isGlobal: true,
+      })],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
