@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import {ConfigModule, ConfigService} from "@nestjs/config";
-import { JobOffersModule } from './models/job-offers/job-offers.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
+import {JobOffersModule} from "./modules/job-offers/job-offers.module";
+import {AppService} from "./app.service";
+import {AppController} from "./app.controller";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule.forRoot({
-        isGlobal: true,
-      })],
+      imports: [ConfigModule.forRoot()],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
@@ -20,13 +18,14 @@ import {TypeOrmModule} from "@nestjs/typeorm";
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: ['dist/**/*.entity.{ts,js}'],
-        migrations: ['dist/migrations/*.{ts,js}'],
+        entities: ["dist/src/**/*.entity{ .ts,.js}"],
+        migrations: ["dist/migrations/*{.ts,.js}"],
         synchronize: true,
-        //autoLoadEntities: true,
+        autoLoadEntities: true,
+        migrationsRun: false
       }),
     }),
-    JobOffersModule
+    JobOffersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
