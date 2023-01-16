@@ -13,7 +13,7 @@ import {createReadStream} from "fs";
 import {CandidatesService} from "./candidates.service";
 import {CandidateEntity} from "./entities/candidate.entity";
 import {diskStorage} from "multer";
-import {CandidateDto} from "./dto/candidate.dto";
+import {CandidateRequest} from "./dto/candidate.dto";
 import { extname } from 'path'
 const { join } = require("path");
 @Controller('candidates')
@@ -40,7 +40,7 @@ export class CandidatesController {
         }),
     }))
     addFile(
-        @Body() candidateDto: CandidateDto,
+        @Body() candidateDto: CandidateRequest,
         @UploadedFile() file): Promise<any> {
         return this.candidatesService.addFile(candidateDto, file);
     }

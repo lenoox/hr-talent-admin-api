@@ -1,5 +1,5 @@
 import {Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {LocationEntity} from "../../../shared/entities/location.entity";
+import {LocationEntity} from "../../directories/locations/entities/location.entity";
 
 @Entity('candidates')
 export class CandidateEntity {
