@@ -4,11 +4,28 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {JobOffersModule} from "./modules/job-offers/job-offers.module";
 import {AppService} from "./app.service";
 import {AppController} from "./app.controller";
+import { AuthenticationModule } from './core/authentication/authentication.module';
+import { UsersModule } from './modules/users/users.module';
+import * as Joi from '@hapi/joi';
 import { CandidatesModule } from './modules/candidates/candidates.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        POSTGRES_HOST: Joi.string().required(),
+        POSTGRES_PORT: Joi.number().required(),
+        POSTGRES_USER: Joi.string().required(),
+        POSTGRES_PASSWORD: Joi.string().required(),
+        POSTGRES_DB: Joi.string().required(),
+        FRONTEND_URLS: Joi.string().required(),
+        JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
+        JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
+        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        TWO_FACTOR_AUTHENTICATION_APP_NAME: Joi.string()
+      })
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule.forRoot()],
       inject: [ConfigService],
@@ -27,6 +44,8 @@ import { CandidatesModule } from './modules/candidates/candidates.module';
       }),
     }),
     JobOffersModule,
+    AuthenticationModule,
+    UsersModule,
     CandidatesModule,
   ],
   controllers: [AppController],
