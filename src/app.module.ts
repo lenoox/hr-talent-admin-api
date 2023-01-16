@@ -8,6 +8,7 @@ import { AuthenticationModule } from './core/authentication/authentication.modul
 import { UsersModule } from './modules/users/users.module';
 import * as Joi from '@hapi/joi';
 import { CandidatesModule } from './modules/candidates/candidates.module';
+import { DirectoriesModule } from './modules/directories/directories.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { CandidatesModule } from './modules/candidates/candidates.module';
     AuthenticationModule,
     UsersModule,
     CandidatesModule,
+    DirectoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
