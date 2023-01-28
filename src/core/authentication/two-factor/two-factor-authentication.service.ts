@@ -34,6 +34,7 @@ export class TwoFactorAuthenticationService {
   }
 
   public async pipeQrCodeStream(stream: Response, otpauthUrl: string) {
+    stream.setHeader('content-type','image/png');
     return toFileStream(stream, otpauthUrl);
   }
 }

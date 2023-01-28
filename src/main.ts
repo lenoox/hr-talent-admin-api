@@ -9,6 +9,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const frontendUrls = configService.get<string>('FRONTEND_URLS');
   app.enableCors({
+    credentials: true,
     origin: frontendUrls.split(";"),
   })
   app.use(cookieParser());
