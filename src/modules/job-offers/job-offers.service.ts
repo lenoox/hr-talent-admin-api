@@ -4,6 +4,7 @@ import { JobOfferEntity } from './entities/job-offer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {JobOfferRequest, JobOfferResponse} from "./dto/job-offer.dto";
 import {dtoToEntity, entityToDto} from "./mappers/job-offers-mapper";
+import {IPaginationOptions, paginate, Pagination} from "nestjs-typeorm-paginate";
 
 @Injectable()
 export class JobOffersService {
@@ -19,12 +20,8 @@ export class JobOffersService {
     );
   }
 
-  findAll():Promise<JobOfferResponse[]>  {
-    return this.jobOfferRepository.find().then(
-        (jobOffer:JobOfferEntity[])=>jobOffer.map(
-            (jobOffer:JobOfferEntity)=>entityToDto(jobOffer)
-        )
-    );
+  findAll(options: IPaginationOptions):Promise<Pagination<JobOfferResponse>>  {
+    return paginate<JobOfferEntity>(this.jobOfferRepository,options);
   }
 
   findOne(id: string):Promise<JobOfferResponse>  {
