@@ -1,9 +1,21 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put, Query,
+  UseGuards
+} from '@nestjs/common';
 import { JobOffersService } from './job-offers.service';
 import {JobOfferEntity} from "./entities/job-offer.entity";
 import { JwtTwoFactorGuard } from "../../core/authentication/jwt-two-factor.guard";
 import {JobOfferRequest, JobOfferResponse} from "./dto/job-offer.dto";
 import {DeleteResult} from "typeorm";
+import {Pagination} from "nestjs-typeorm-paginate";
 
 @Controller('job-offers')
 export class JobOffersController {
@@ -17,8 +29,14 @@ export class JobOffersController {
 
   @Get('/')
   @UseGuards(JwtTwoFactorGuard)
-  findAll(): Promise<JobOfferEntity[]> {
-    return this.jobOffersService.findAll();
+  findAll(
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+      @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ): Promise<Pagination<JobOfferEntity>> {
+    return this.jobOffersService.findAll({
+      page,
+      limit
+    });
   }
 
   @Post('/')
