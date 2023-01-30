@@ -5,8 +5,8 @@ export class JobOfferRequest {
     id: string;
     position: string;
     offerDescription: string;
-    seniorities: SeniorityRequest[];
-    locations: LocationRequest[];
+    seniorities: string[];
+    locations: string[];
 }
 export class JobOfferResponse {
     id: string;
