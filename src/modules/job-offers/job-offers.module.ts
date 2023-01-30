@@ -5,6 +5,7 @@ import {JobOffersService} from "./job-offers.service";
 import {JobOfferEntity} from "./entities/job-offer.entity";
 import {JobOffersController} from "./job-offers.controller";
 import {SharedModule} from "../../shared/shared.module";
+import {JobOffersMapper} from "./mappers/job-offers-mapper";
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import {SharedModule} from "../../shared/shared.module";
   controllers: [
     JobOffersController
   ],
-  providers: [JobOffersService]
+  providers: [JobOffersService,JobOffersMapper]
 })
 export class JobOffersModule {}
