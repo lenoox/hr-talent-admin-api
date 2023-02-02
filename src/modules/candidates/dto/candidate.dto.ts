@@ -1,10 +1,12 @@
-import {LocationRequest, LocationResponse} from "../../directories/locations/dto/location.dto";
+import {LocationResponse} from "../../directories/locations/dto/location.dto";
+import {StatusResponse} from "../../directories/statuses/dto/seniority.dto";
 
 
 export class CandidateRequest {
+    id:string;
     firstName: string;
     lastName: string;
-    locations: LocationRequest[]
+    locations: string;
     position: string;
     attachment: string;
     aboutMe: string;
@@ -17,5 +19,5 @@ export class CandidateResponse {
     position: string;
     attachment: string;
     aboutMe: string;
-    status: string;
+    status: StatusResponse;
 }

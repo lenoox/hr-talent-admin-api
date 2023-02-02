@@ -4,13 +4,14 @@ import { CandidatesController } from './candidates.controller';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {SharedModule} from "../../shared/shared.module";
 import {CandidateEntity} from "./entities/candidate.entity";
+import {CandidatesMapper} from "./mappers/candidates-mapper.service";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([CandidateEntity]),
     SharedModule
   ],
-  providers: [CandidatesService],
+  providers: [CandidatesService,CandidatesMapper],
   controllers: [CandidatesController]
 })
 export class CandidatesModule {}

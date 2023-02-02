@@ -12,3 +12,8 @@ INSERT INTO public.seniorities (seniority_key,seniority_name) VALUES ('JUNIOR','
 INSERT INTO public.seniorities (seniority_key,seniority_name) VALUES ('MID','Mid') ON CONFLICT DO NOTHING;
 INSERT INTO public.seniorities (seniority_key,seniority_name) VALUES ('SENIOR','Senior') ON CONFLICT DO NOTHING;
 INSERT INTO public.seniorities (seniority_key,seniority_name) VALUES ('EXPERT','Expert') ON CONFLICT DO NOTHING;
+
+INSERT INTO public.statuses (status_key,status_name) VALUES ('APPLIED','Aplikował') ON CONFLICT DO NOTHING;
+INSERT INTO public.statuses (status_key,status_name) VALUES ('INPROGRESS','W trakcie') ON CONFLICT DO NOTHING;
+INSERT INTO public.statuses (status_key,status_name) VALUES ('NOTACCEPTED','Nie zaakceptowano') ON CONFLICT DO NOTHING;
+INSERT INTO public.statuses (status_key,status_name) VALUES ('ACCEPTED','Zaakceptowano') ON CONFLICT DO NOTHING;

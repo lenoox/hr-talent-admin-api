@@ -1,5 +1,6 @@
-import {Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {LocationEntity} from "../../directories/locations/entities/location.entity";
+import {StatusEntity} from "../../directories/statuses/entities/status.entity";
 
 @Entity('candidates')
 export class CandidateEntity {
@@ -12,7 +13,7 @@ export class CandidateEntity {
   @Column({ name: 'last_name', nullable: false })
   lastName: string;
 
-  @ManyToMany(() => LocationEntity,{ cascade: true, eager: true})
+  @ManyToOne(() => LocationEntity,{ cascade: true, eager: true})
   @JoinTable()
   locations: LocationEntity[]
 
@@ -25,6 +26,6 @@ export class CandidateEntity {
   @Column({ name: 'about_me', nullable: false })
   aboutMe: string;
 
-  @Column({ name: 'status', nullable: false })
-  status: string;
+  @ManyToOne(() => StatusEntity, (user) => user.statuses,{ cascade: true, eager: true})
+  status: StatusEntity
 }
