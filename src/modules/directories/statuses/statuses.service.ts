@@ -17,4 +17,8 @@ export class StatusesService {
     findOne(id: string) {
         return this.seniorityRepository.findOneBy({id});
     }
+
+    findByName(key: string) {
+        return this.seniorityRepository.findOneBy({key});
+    }
 }

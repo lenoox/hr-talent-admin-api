@@ -12,7 +12,6 @@ export class JobOffersMapper {
         private jobOfferRepository: Repository<JobOfferEntity>,
     ) {}
     dtoToEntity(jobOfferRequest: JobOfferRequest):any{
-        console.log(jobOfferRequest)
         const jobOffer = {
             ...jobOfferRequest,
             seniorities: jobOfferRequest.seniorities.map((id:string)=>{

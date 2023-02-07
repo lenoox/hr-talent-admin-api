@@ -1,7 +1,7 @@
 import {LocationResponse} from "../../directories/locations/dto/location.dto";
 import {StatusResponse} from "../../directories/statuses/dto/seniority.dto";
 
-
+//@TODO
 export class CandidateRequest {
     id:string;
     firstName: string;
@@ -11,6 +11,7 @@ export class CandidateRequest {
     attachment: string;
     aboutMe: string;
     status: string;
+    jobOffer: {id:string};
 }
 export class CandidateResponse {
     firstName: string;
@@ -20,4 +21,5 @@ export class CandidateResponse {
     attachment: string;
     aboutMe: string;
     status: StatusResponse;
+    jobOffer: {id:string, position:string}[];
 }

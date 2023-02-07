@@ -28,7 +28,6 @@ export class JobOffersController {
   }
 
   @Get('/')
-  @UseGuards(JwtTwoFactorGuard)
   findAll(
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
       @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
@@ -46,11 +45,13 @@ export class JobOffersController {
   }
 
   @Put(':id')
+  @UseGuards(JwtTwoFactorGuard)
   update(@Param('id') id: string, @Body() jobOffers: JobOfferRequest): Promise<JobOfferResponse> {
     return this.jobOffersService.update(id,jobOffers);
   }
 
   @Delete(':id')
+  @UseGuards(JwtTwoFactorGuard)
   remove(@Param('id') id: string): Promise<DeleteResult>  {
     return this.jobOffersService.remove(id);
   }
