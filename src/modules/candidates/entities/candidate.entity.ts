@@ -1,6 +1,7 @@
 import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {LocationEntity} from "../../directories/locations/entities/location.entity";
 import {StatusEntity} from "../../directories/statuses/entities/status.entity";
+import {JobOfferEntity} from "../../job-offers/entities/job-offer.entity";
 
 @Entity('candidates')
 export class CandidateEntity {
@@ -28,4 +29,12 @@ export class CandidateEntity {
 
   @ManyToOne(() => StatusEntity, (user) => user.statuses,{ cascade: true, eager: true})
   status: StatusEntity
+
+  @ManyToMany(
+      () => JobOfferEntity,
+      (jobOffer) => jobOffer.id,
+      {cascade: true, eager: true}
+  )
+  @JoinTable()
+  jobOffer: JobOfferEntity[];
 }

@@ -29,12 +29,12 @@ export class CandidatesService {
         return this.candidatesRepository.delete(id);
     }
 
-    async addFile(eventData: CandidateRequest, file: any): Promise<CandidateResponse> {
-        const eventDataEntity = this.candidatesMapper.dtoToEntity(eventData)
+    async addFile(jobOfferId:string, eventData: CandidateRequest, file: any): Promise<CandidateResponse> {
+        const eventDataEntity = await this.candidatesMapper.dtoToEntity(eventData,true,jobOfferId)
 
         eventDataEntity.attachment = (file) ? file.filename : '';
-         const candidate = await this.candidatesRepository.save(eventDataEntity);
-         const id = candidate.id;
+        const candidate = await this.candidatesRepository.save(eventDataEntity);
+        const id = candidate.id;
         return await this.candidatesRepository.findOneBy({id}).then(
             (jobOffer:CandidateEntity)=>this.candidatesMapper.entityToDto(jobOffer)
         );
@@ -42,7 +42,7 @@ export class CandidatesService {
     async update(id: string, candidateRequest: CandidateRequest):Promise<CandidateResponse> {
         candidateRequest.id = id;
         const candidate = await this.candidatesRepository.findOneBy({id});
-        const jobOfferEntity = this.candidatesMapper.dtoToEntity(candidateRequest)
+        const jobOfferEntity = this.candidatesMapper.dtoToEntity(candidateRequest,false)
         Object.assign(candidate, jobOfferEntity);
         return await this.candidatesRepository.save(candidate).then(
             (jobOffer:CandidateEntity)=>this.candidatesMapper.entityToDto(jobOffer)

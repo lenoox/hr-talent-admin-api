@@ -21,6 +21,7 @@ import {StatusesService} from "./statuses/statuses.service";
     LocationsController,
     StatusesController,
   ],
-  providers: [LocationsService, SenioritiesService,StatusesService]
+  providers: [LocationsService, SenioritiesService,StatusesService],
+  exports: [LocationsService, SenioritiesService,StatusesService]
 })
 export class DirectoriesModule {}
