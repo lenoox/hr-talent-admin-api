@@ -17,7 +17,10 @@ export class UsersService {
     if (user) {
       return user;
     }
-    throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND);
+    throw new HttpException(
+      'User with this email does not exist',
+      HttpStatus.NOT_FOUND,
+    );
   }
 
   async getByIds(ids: number[]) {
@@ -31,7 +34,10 @@ export class UsersService {
     if (user) {
       return user;
     }
-    throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
+    throw new HttpException(
+      'User with this id does not exist',
+      HttpStatus.NOT_FOUND,
+    );
   }
 
   async create(userData: UserDto) {
@@ -74,7 +80,7 @@ export class UsersService {
 
   async turnOnTwoFactorAuthentication(userId: number) {
     return this.usersRepository.update(userId, {
-      isTwoFactorAuthenticationEnabled: true
+      isTwoFactorAuthenticationEnabled: true,
     });
   }
 }
