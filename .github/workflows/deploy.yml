@@ -6,7 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/develop'
     env:
-      IMAGE_NAME: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+      #IMAGE_NAME: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+      IMAGE_NAME: ${{ secrets.IMAGE }}
       PROFILE_ACTIVE: prod
       APP_NAME: ${{ secrets.GCP_APP_NAME }}
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -30,12 +31,15 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
-      - name: 'Set up Cloud SDK'
-        run: 'echo "${{ secrets.GCP_CREDENTIALS }}" > secret.json'
-      - name: 'Auth Artifact'
-        run: 'gcloud auth activate-service-account $ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GCP_PROJECT_ID'
       - name: 'Authorize Docker push'
-        run: 'gcloud auth configure-docker --quiet'
+        run: |
+          gcloud config set artifacts/repository $APP_NAME \
+          gcloud config set artifacts/location us-central1 \
+          gcloud config set account $ACCOUNT \
+          gcloud auth activate-service-account $ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GCP_PROJECT_ID
+      #- name: 'Auth Artifact'
+      #- name: 'Authorize Docker push'
+      #  run: 'gcloud auth configure-docker --quiet'
       - name: 'Build Docker image'
         run: 'docker build . -t $IMAGE_NAME'
       - name: 'Test Docker image'
