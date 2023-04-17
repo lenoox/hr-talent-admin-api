@@ -30,7 +30,7 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
       - name: 'Set up Cloud SDK'
-        uses: 'echo ${{ secrets.GCP_CREDENTIALS }} > cert.txt'
+        run: 'echo ${{ secrets.GCP_CREDENTIALS }} > cert.txt'
       - name: 'Auth Artifact'
         run: 'gcloud auth activate-service-account $ACCOUNT --key-file=./cert.txt --project=$GCP_PROJECT_ID'
       - name: 'Authorize Docker push'
