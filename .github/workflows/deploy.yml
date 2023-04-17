@@ -31,12 +31,18 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
-      - name: 'Authorize Docker push'
-        run: |
-          gcloud config set artifacts/repository $APP_NAME \
-          gcloud config set artifacts/location us-central1 \
-          gcloud config set account $ACCOUNT \
-          gcloud auth activate-service-account $ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GCP_PROJECT_ID
+      - name: Login to GAR
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.REGION}}-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+#      - name: 'Authorize Docker push'
+ #       run: |
+  #        gcloud config set artifacts/repository $APP_NAME \
+   #       gcloud config set artifacts/location us-central1 \
+    #      gcloud config set account $ACCOUNT \
+     #     gcloud auth activate-service-account $ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GCP_PROJECT_ID
       #- name: 'Auth Artifact'
       #- name: 'Authorize Docker push'
       #  run: 'gcloud auth configure-docker --quiet'
