@@ -7,7 +7,7 @@ jobs:
     #if: github.ref == 'refs/heads/develop'
     env:
       #IMAGE_NAME: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
-      IMAGE_NAME: ${{ secrets.IMAGE }}
+      IMAGE_NAME: us-central1-docker.pkg.dev/$GCP_PROJECT_ID/$APP_NAME
       PROFILE_ACTIVE: prod
       APP_NAME: ${{ secrets.GCP_APP_NAME }}
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -31,40 +31,21 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v1'
       - name: Check out code
         uses: actions/checkout@v2
- #       with:
-  #        export_default_credentials: true
-
-#      - name: 'Authorize Docker push'
- #       run: |
-  #        gcloud config set artifacts/repository $APP_NAME \
-   #       gcloud config set artifacts/location us-central1 \
-    #      gcloud config set account $ACCOUNT \
-     #     gcloud auth activate-service-account $ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GCP_PROJECT_ID
-      #- name: 'Auth Artifact'
-      #- name: 'Authorize Docker push'
-      #  run: 'gcloud auth configure-docker --quiet'
-      - name: Configure Docker Client
-        run: |-
-          gcloud auth configure-docker --quiet
-          gcloud auth configure-docker us-west2-docker.pkg.dev --quiet
-   
-
       - name: 'Build Docker image'
         run: 'docker build -t $IMAGE_NAME .'
-
       - name: Configure Docker Client
         run: |-
           gcloud auth configure-docker --quiet
           gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
-#      - name: 'Test Docker image'
-#        run: 'docker run -d -p 80:80 $IMAGE_NAME'
       - name: 'Push Docker image'
-        run: 'docker push $IMAGE_NAME'
+        run:  |-
+          docker tag $IMAGE_NAME:latest us-central1-docker.pkg.dev/$GCP_PROJECT_ID/$APP_NAME:latest
+          docker push us-central1-docker.pkg.dev/$GCP_PROJECT_ID/$APP_NAME:latest
       - name: 'Deploy'
-        run: |
+        run: |-
           gcloud compute instances update-container $APP_NAME \
           --zone $INSTANCE_ZONE \
-          --container-image $IMAGE_NAME \
+          --container-image $GCP_PROJECT_ID \
           --container-env POSTGRES_HOST="$POSTGRES_HOST" \
           --container-env POSTGRES_PORT="$POSTGRES_PORT" \
           --container-env POSTGRES_USER="$POSTGRES_USER" \
