@@ -17,7 +17,6 @@ jobs:
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       ACCOUNT: ${{ secrets.ACCOUNT }}
-      GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -30,8 +29,10 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
+      - name: 'Set up Cloud SDK'
+        uses: 'echo ${{ secrets.GCP_CREDENTIALS }} > cert.txt'
       - name: 'Auth Artifact'
-        run: 'gcloud auth activate-service-account $ACCOUNT --key-file=$GCP_CREDENTIALS --project=$GCP_PROJECT_ID'
+        run: 'gcloud auth activate-service-account $ACCOUNT --key-file=./cert.txt --project=$GCP_PROJECT_ID'
       - name: 'Authorize Docker push'
         run: 'gcloud auth configure-docker --quiet'
       - name: 'Build Docker image'
@@ -50,3 +51,5 @@ jobs:
           --container-env POSTGRES_USER="$POSTGRES_USER" \
           --container-env POSTGRES_DB="$POSTGRES_DB" \
           --container-env POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+      - name: 'remove key'
+        uses: 'rm -rf ./cert.txt'
