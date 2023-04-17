@@ -30,9 +30,9 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
       - name: 'Set up Cloud SDK'
-        run: 'echo ${{ secrets.GCP_CREDENTIALS }} > cert.txt'
+        run: 'echo "${{ secrets.GCP_CREDENTIALS }}" > secret.json'
       - name: 'Auth Artifact'
-        run: 'gcloud auth activate-service-account $ACCOUNT --key-file=./cert.txt --project=$GCP_PROJECT_ID'
+        run: 'gcloud auth activate-service-account $ACCOUNT --key-file=./secret.json --project=$GCP_PROJECT_ID'
       - name: 'Authorize Docker push'
         run: 'gcloud auth configure-docker --quiet'
       - name: 'Build Docker image'
@@ -52,4 +52,4 @@ jobs:
           --container-env POSTGRES_DB="$POSTGRES_DB" \
           --container-env POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
       - name: 'remove key'
-        run: 'rm -rf ./cert.txt'
+        run: 'rm -rf ./secret.json'
