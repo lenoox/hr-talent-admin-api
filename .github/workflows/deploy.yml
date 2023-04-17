@@ -23,17 +23,13 @@ jobs:
       contents: 'read'
       id-token: 'write'
     steps:
-      - name: 'Auth'
-        uses: 'google-github-actions/auth@v0'
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
         with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - uses: google-github-actions/setup-gcloud@v1
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
         with:
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-          project_id: ${{ env.GCP_PROJECT_ID }}
           export_default_credentials: true
 
 #      - name: 'Authorize Docker push'
