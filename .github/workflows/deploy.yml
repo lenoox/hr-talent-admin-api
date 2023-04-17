@@ -39,8 +39,8 @@ jobs:
           gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
       - name: 'Push Docker image'
         run:  |-
-          docker tag ${{ secrets.GCP_APP_NAME }}:latest us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:latest
-          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:latest
+          docker tag hr-talent-admin-api us-central1-docker.pkg.dev/hr-project-app/hr-talent-admin-api
+          docker push us-central1-docker.pkg.dev/hr-project-app/hr-talent-admin-api
       - name: 'Deploy'
         run: |-
           gcloud compute instances update-container $APP_NAME \
