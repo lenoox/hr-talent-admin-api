@@ -32,7 +32,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: 'Build Docker image'
-        run: 'docker build -t $IMAGE_NAME .'
+        run: 'docker build . -t $IMAGE_NAME'
       - name: Configure Docker Client
         run: |-
           gcloud auth configure-docker --quiet
