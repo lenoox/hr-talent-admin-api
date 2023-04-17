@@ -17,6 +17,7 @@ jobs:
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       ACCOUNT: ${{ secrets.ACCOUNT }}
+      GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GCP_CREDENTIALS }}'
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -32,7 +33,7 @@ jobs:
       - name: 'Set up Cloud SDK'
         run: 'echo "${{ secrets.GCP_CREDENTIALS }}" > secret.json'
       - name: 'Auth Artifact'
-        run: 'gcloud auth activate-service-account $ACCOUNT --key-file=./secret.json --project=$GCP_PROJECT_ID'
+        run: 'gcloud auth activate-service-account $ACCOUNT --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$GCP_PROJECT_ID'
       - name: 'Authorize Docker push'
         run: 'gcloud auth configure-docker --quiet'
       - name: 'Build Docker image'
