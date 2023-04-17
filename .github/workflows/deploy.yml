@@ -52,4 +52,4 @@ jobs:
           --container-env POSTGRES_DB="$POSTGRES_DB" \
           --container-env POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
       - name: 'remove key'
-        uses: 'rm -rf ./cert.txt'
+        run: 'rm -rf ./cert.txt'
