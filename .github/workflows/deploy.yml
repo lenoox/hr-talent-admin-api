@@ -9,12 +9,15 @@ jobs:
       IMAGE_NAME: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
       PROFILE_ACTIVE: prod
       APP_NAME: ${{ secrets.GCP_APP_NAME }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       INSTANCE_ZONE: ${{ secrets.INSTANCE_ZONE}}
       POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
       POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -24,9 +27,11 @@ jobs:
       - name: 'Auth'
         uses: 'google-github-actions/auth@v0'
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '$GCP_CREDENTIALS'
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
+      - name: 'Auth Artifact'
+        run: 'gcloud auth activate-service-account $ACCOUNT --key-file=$GCP_CREDENTIALS --project=$GCP_PROJECT_ID'
       - name: 'Authorize Docker push'
         run: 'gcloud auth configure-docker --quiet'
       - name: 'Build Docker image'
