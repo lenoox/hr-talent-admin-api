@@ -1,6 +1,5 @@
 FROM node:lts-bullseye-slim As build
 WORKDIR /usr/src/app
-ENV NODE_ENV production
 RUN npm install -g npm
 COPY --chown=node:node package*.json ./
 RUN npm ci && npm cache clean --force
