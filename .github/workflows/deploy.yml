@@ -11,11 +11,9 @@ jobs:
       APP_NAME: ${{ secrets.GCP_APP_NAME }}
       REGION: ${{ secrets.GCP_REGION }}
       ACCOUNT: ${{ secrets.ACCOUNT }}
-      REPOSITRORY: ${{ env.REGION }}-docker.pkg.dev
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       REPOSITORY: ${{ secrets.GCP_APP_NAME }}
       IMAGE: ${{ secrets.GCP_APP_NAME }}
-      IMAGE_URL: ${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest
       INSTANCE_ZONE: ${{ secrets.INSTANCE_ZONE}}
       POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
       POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
@@ -37,8 +35,13 @@ jobs:
       - name: 'Docker auth configuration'
         run: gcloud auth configure-docker
       - name: 'Build image'
+        env:
+          IMAGE_URL: ${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest
         run: docker build --tag $IMAGE_URL .
       - name: 'Docker push image'
+        env:
+          REPOSITRORY: ${{ env.REGION }}-docker.pkg.dev
+          IMAGE_URL: ${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest
         run: |-
           gcloud auth configure-docker $REPOSITRORY
           docker push "$IMAGE_URL"
