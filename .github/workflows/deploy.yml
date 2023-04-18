@@ -36,12 +36,12 @@ jobs:
         run: gcloud auth configure-docker
       - name: 'Build image'
         env:
-          IMAGE_URL: ${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest
-        run: docker build --tag "$IMAGE_URL" .
+          IMAGE_URL: '${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest'
+        run: docker build --tag $IMAGE_URL .
       - name: 'Docker push image'
         env:
           REPOSITRORY: ${{ env.REGION }}-docker.pkg.dev
-          IMAGE_URL: ${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest
+          IMAGE_URL: '${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest'
         run: |-
           gcloud auth configure-docker $REPOSITRORY
           docker push "$IMAGE_URL"
