@@ -37,7 +37,7 @@ jobs:
       - name: 'Docker auth configuration'
         run: gcloud auth configure-docker
       - name: 'Build image'
-        run: docker build --tag "$IMAGE_URL" .
+        run: docker build --tag $IMAGE_URL .
       - name: 'Docker push image'
         run: |-
           gcloud auth configure-docker $REPOSITRORY
