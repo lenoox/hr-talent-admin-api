@@ -48,7 +48,7 @@ jobs:
         run: |-
           gcloud compute instances update-container $APP_NAME \
           --zone $INSTANCE_ZONE \
-          --container-image $PROJECT_ID \
+          --container-image $IMAGE_URL \
           --container-env POSTGRES_HOST="$POSTGRES_HOST" \
           --container-env POSTGRES_PORT="$POSTGRES_PORT" \
           --container-env POSTGRES_USER="$POSTGRES_USER" \
