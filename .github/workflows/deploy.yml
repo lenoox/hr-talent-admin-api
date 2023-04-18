@@ -37,7 +37,7 @@ jobs:
       - name: 'Build image'
         env:
           IMAGE_URL: ${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest
-        run: docker build --tag $IMAGE_URL .
+        run: docker build --tag "$IMAGE_URL" .
       - name: 'Docker push image'
         env:
           REPOSITRORY: ${{ env.REGION }}-docker.pkg.dev
