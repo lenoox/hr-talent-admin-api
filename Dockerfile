@@ -1,19 +1,10 @@
-FROM node:lts-bullseye-slim As development
-WORKDIR /usr/src/app
-COPY --chown=node:node package*.json ./
-RUN npm install -g npm
-RUN npm ci
-COPY --chown=node:node . .
-USER node
-
-
 FROM node:lts-bullseye-slim As build
 WORKDIR /usr/src/app
-COPY --chown=node:node package*.json ./
-RUN npm ci --only=production && npm cache clean --force
-COPY --chown=node:node . .
-RUN npm install -g npm
 ENV NODE_ENV production
+RUN npm install -g npm
+COPY --chown=node:node package*.json ./
+RUN npm ci && npm cache clean --force
+COPY --chown=node:node . .
 RUN npm run build
 
 
