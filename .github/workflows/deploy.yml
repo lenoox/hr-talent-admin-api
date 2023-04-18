@@ -11,11 +11,11 @@ jobs:
       APP_NAME: ${{ secrets.GCP_APP_NAME }}
       REGION: ${{ secrets.GCP_REGION }}
       ACCOUNT: ${{ secrets.ACCOUNT }}
-      REPOSITRORY: $REGION-docker.pkg.dev
+      REPOSITRORY: ${{ env.REGION }}-docker.pkg.dev
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       REPOSITORY: ${{ secrets.GCP_APP_NAME }}
       IMAGE: ${{ secrets.GCP_APP_NAME }}
-      IMAGE_URL: $REPOSITRORY/$PROJECT_ID/$REPOSITORY/$IMAGE:latest
+      IMAGE_URL: ${{ env.ACCOUNT }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:latest
       INSTANCE_ZONE: ${{ secrets.INSTANCE_ZONE}}
       POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
       POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
