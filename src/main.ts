@@ -20,6 +20,6 @@ async function bootstrap() {
     origin: frontendUrls.split(';'),
   });
   app.use(cookieParser());
-  await app.listen(443);
+  await app.listen(8443);
 }
 bootstrap();
