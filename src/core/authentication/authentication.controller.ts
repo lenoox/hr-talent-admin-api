@@ -8,7 +8,6 @@ import {
   Get,
   ClassSerializerInterceptor,
   UseInterceptors,
-  Res,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { RegisterDto } from './dto/register.dto';
@@ -17,7 +16,6 @@ import { LocalAuthenticationGuard } from './local-authentication.guard';
 import { JwtAuthenticationGuard } from './jwt-authentication.guard';
 import { UsersService } from '../../modules/users/users.service';
 import { JwtRefreshGuard } from './jwt-refresh.guard';
-import { ConfigService } from '@nestjs/config';
 
 @Controller('authentication')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -25,7 +23,6 @@ export class AuthenticationController {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly usersService: UsersService,
-    private readonly configService: ConfigService,
   ) {}
 
   @Post('register')
@@ -36,11 +33,7 @@ export class AuthenticationController {
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
   @Post('log-in')
-  async logIn(
-    @Req() request: RequestWithUser,
-    @Res({ passthrough: true }) res,
-  ) {
-    const frontendUrls = this.configService.get<string>('FRONTEND_URLS');
+  async logIn(@Req() request: RequestWithUser) {
     const { user } = request;
     const accessTokenCookie =
       this.authenticationService.getCookieWithJwtAccessToken(user.id);
@@ -48,27 +41,17 @@ export class AuthenticationController {
       this.authenticationService.getCookieWithJwtRefreshToken(user.id);
 
     await this.usersService.setCurrentRefreshToken(refreshToken, user.id);
-    //
-    // request.res.setHeader('Set-Cookie', [
-    //   accessTokenCookie,
-    //   refreshTokenCookie,
-    // ]);
-    res.cookie('Authentication', accessTokenCookie, {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: 'false',
-    });
-    res.cookie('Authentication', refreshTokenCookie, {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: 'false',
-    });
+
+    request.res.setHeader('Set-Cookie', [
+      accessTokenCookie,
+      refreshTokenCookie,
+    ]);
 
     if (user.isTwoFactorAuthenticationEnabled) {
       return;
     }
 
-    return res;
+    return user;
   }
 
   @UseGuards(JwtAuthenticationGuard)
