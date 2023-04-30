@@ -19,6 +19,6 @@ async function bootstrap() {
     origin: frontendUrls.split(';'),
   });
   app.use(cookieParser());
-  await app.listen(3000);
+  await app.listen(443);
 }
 bootstrap();

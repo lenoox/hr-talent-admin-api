@@ -9,5 +9,5 @@ RUN npm run build
 FROM node:lts-bullseye-slim As production
 COPY --chown=node:node --from=build /usr/src/app/node_modules/ /app/node_modules/
 COPY --chown=node:node --from=build /usr/src/app/dist/ /app/dist
-EXPOSE 3000
+EXPOSE 443
 CMD [ "node", "/app/dist/src/main" ]
