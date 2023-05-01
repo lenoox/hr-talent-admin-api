@@ -12,6 +12,8 @@ async function bootstrap() {
       key: fs.readFileSync(keyPath, 'utf8'),
       cert: fs.readFileSync(certPath, 'utf8'),
     };
+    console.log(`Load key path ${keyPath}`);
+    console.log(`Load cert path ${certPath}`);
     const app = await NestFactory.create(AppModule, {
       httpsOptions,
     });
@@ -22,7 +24,9 @@ async function bootstrap() {
       origin: frontendUrls.split(';'),
     });
     app.use(cookieParser());
-    await app.listen(process.env.PORT);
+    await app.listen(process.env.PORT).then(() => {
+      console.log(`Start application on ${process.env.PORT} port`);
+    });
   } catch (error) {
     console.error(error);
   }
