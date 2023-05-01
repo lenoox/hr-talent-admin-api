@@ -11,6 +11,6 @@ FROM node:lts-bullseye-slim As production
 WORKDIR /app
 COPY --chown=node:node --from=build /app/node_modules/ node_modules
 COPY --chown=node:node --from=build /app/dist/ dist
-COPY /app/certs/ certs
+COPY --from=build /app/certs/ certs
 EXPOSE 443
 CMD [ "node", "/app/dist/src/main" ]
