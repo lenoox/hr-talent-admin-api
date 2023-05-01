@@ -15,23 +15,21 @@ async function bootstrap() {
       key: fs.readFileSync(keyPath, 'utf8'),
       cert: fs.readFileSync(certPath, 'utf8'),
     };
-
+    const cors = {
+      credentials: true,
+      origin: process.env.FRONTEND_URLS.split(';'),
+    };
     const server = express();
     const app = await NestFactory.create(
       AppModule,
       new ExpressAdapter(server),
       {
+        cors,
         logger: ['error', 'warn', 'log'],
       },
     );
     console.log(`Load key path ${keyPath}`);
     console.log(`Load cert path ${certPath}`);
-    const configService = app.get(ConfigService);
-    const frontendUrls = configService.get<string>('FRONTEND_URLS');
-    app.enableCors({
-      credentials: true,
-      origin: frontendUrls.split(';'),
-    });
     app.use(cookieParser());
     await app.init();
     console.log(`Listen port 3000`);
