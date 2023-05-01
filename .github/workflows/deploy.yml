@@ -52,6 +52,7 @@ jobs:
       - name: 'Deploy project'
         run: |-
           gcloud compute instances update-container $APP_NAME \
+          --container-restart-policy=always \
           --zone $INSTANCE_ZONE \
           --container-image $IMAGE \
           --container-env POSTGRES_HOST="$POSTGRES_HOST" \
@@ -68,3 +69,5 @@ jobs:
           --container-env SSL_CERT_PATH="$SSL_CERT_PATH" \
           --container-env SSL_KEY_PATH="$SSL_KEY_PATH" \
           --container-env PORT="$PORT"
+#      - name: 'Start project'
+#        run: gcloud compute instances start $APP_NAME
