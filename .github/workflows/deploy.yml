@@ -11,7 +11,7 @@ jobs:
       APP_NAME: ${{ secrets.APP_NAME }}
       INSTANCE_ZONE: ${{ secrets.INSTANCE_ZONE}}
       REPOSITRORY: ${{ secrets.GCP_REGION }}-docker.pkg.dev
-      IMAGE_URL: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:latest
+      IMAGE_URL: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:${SHORT_SHA}
       POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
       POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
+      - name: Add SHORT_SHA to ENV
+        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: 'Auth'
         uses: google-github-actions/auth@v0
         with:
