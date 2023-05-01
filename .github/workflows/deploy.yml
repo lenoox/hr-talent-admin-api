@@ -23,6 +23,8 @@ jobs:
       JWT_ACCESS_TOKEN_EXPIRATION_TIME: ${{ secrets.JWT_ACCESS_TOKEN_EXPIRATION_TIME }}
       JWT_REFRESH_TOKEN_EXPIRATION_TIME: ${{ secrets.JWT_REFRESH_TOKEN_EXPIRATION_TIME }}
       TWO_FACTOR_AUTHENTICATION_APP_NAME: ${{ secrets.APP_NAME }}
+      SSL_CERT_PATH: '../../certs/cert.pem'
+      SSL_KEY_PATH: '../../certs/key.pem'
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -59,3 +61,5 @@ jobs:
           --container-env JWT_ACCESS_TOKEN_EXPIRATION_TIME="$JWT_ACCESS_TOKEN_EXPIRATION_TIME" \
           --container-env JWT_REFRESH_TOKEN_EXPIRATION_TIME="$JWT_REFRESH_TOKEN_EXPIRATION_TIME" \
           --container-env TWO_FACTOR_AUTHENTICATION_APP_NAME="$TWO_FACTOR_AUTHENTICATION_APP_NAME" \
+          --container-env SSL_CERT_PATH="$SSL_CERT_PATH" \
+          --container-env SSL_KEY_PATH="$SSL_KEY_PATH"

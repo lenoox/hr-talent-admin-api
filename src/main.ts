@@ -3,12 +3,13 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 import * as fs from 'fs';
-const keyFile = fs.readFileSync(__dirname + '/../../certs/key.pem');
-const certFile = fs.readFileSync(__dirname + '/../../certs/cert.pem');
+import * as path from 'path';
 async function bootstrap() {
+  const keyPath = process.env.SSL_KEY_PATH || '';
+  const certPath = process.env.SSL_CERT_PATH || '';
   const httpsOptions = {
-    key: keyFile,
-    cert: certFile,
+    key: fs.readFileSync(path.join(__dirname, keyPath)),
+    cert: fs.readFileSync(path.join(__dirname, certPath)),
   };
   const app = await NestFactory.create(AppModule, {
     httpsOptions,
