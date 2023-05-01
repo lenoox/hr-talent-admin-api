@@ -15,10 +15,17 @@ async function bootstrap() {
       key: fs.readFileSync(keyPath, 'utf8'),
       cert: fs.readFileSync(certPath, 'utf8'),
     };
+
+    const server = express();
+    const app = await NestFactory.create(
+      AppModule,
+      new ExpressAdapter(server),
+      {
+        logger: ['error', 'warn', 'log'],
+      },
+    );
     console.log(`Load key path ${keyPath}`);
     console.log(`Load cert path ${certPath}`);
-    const server = express();
-    const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
     const configService = app.get(ConfigService);
     const frontendUrls = configService.get<string>('FRONTEND_URLS');
     app.enableCors({
@@ -27,6 +34,8 @@ async function bootstrap() {
     });
     app.use(cookieParser());
     await app.init();
+    console.log(`Listen port 3000`);
+    console.log(`Listen port 443`);
     http.createServer(server).listen(3000);
     https.createServer(httpsOptions, server).listen(443);
   } catch (error) {
