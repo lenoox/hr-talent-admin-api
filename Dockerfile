@@ -3,6 +3,7 @@ WORKDIR /app
 RUN npm install -g npm
 COPY --chown=node:node package*.json ./
 RUN npm ci && npm cache clean --force
+ADD certs certs
 COPY --chown=node:node . .
 RUN npm run build
 
