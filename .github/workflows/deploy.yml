@@ -42,18 +42,18 @@ jobs:
       - name: Generate Image Tag
         id: image-tag
         run: |
-          echo "IMAGE=`${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:${GITHUB_SHA::8}`" >> $env:GITHUB_ENV
+          echo "IMAGE=`${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:${GITHUB_SHA::8}`" >> $GITHUB_ENV
       - name: 'Build image'
-        run: docker build --tag ${{ env.IMAGE }} .
+        run: docker build --tag $IMAGE .
       - name: 'Docker push image'
         run: |-
           gcloud auth configure-docker $REPOSITRORY
-          docker push "${{ env.IMAGE }}"
+          docker push "$IMAGE"
       - name: 'Deploy project'
         run: |-
           gcloud compute instances update-container $APP_NAME \
           --zone $INSTANCE_ZONE \
-          --container-image ${{ env.IMAGE }} \
+          --container-image $IMAGE \
           --container-env POSTGRES_HOST="$POSTGRES_HOST" \
           --container-env POSTGRES_PORT="$POSTGRES_PORT" \
           --container-env POSTGRES_USER="$POSTGRES_USER" \
