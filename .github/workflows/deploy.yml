@@ -40,7 +40,6 @@ jobs:
       - name: 'Docker auth configuration'
         run: gcloud auth configure-docker
       - name: Generate Image Tag
-        id: image-tag
         run: |
           echo "IMAGE=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:${GITHUB_SHA::8}" >> $GITHUB_ENV
       - name: 'Build image'
