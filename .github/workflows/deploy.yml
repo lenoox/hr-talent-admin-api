@@ -42,7 +42,7 @@ jobs:
       - name: Generate Image Tag
         id: image-tag
         run: |
-          echo "image_tag=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:${GITHUB_SHA::8}" >> $GITHUB_ENV
+          echo "image_tag=`${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:${GITHUB_SHA::8}`" >> $GITHUB_ENV
       - name: 'Build image'
         run: docker build --tag ${{ image_tag }} .
       - name: 'Docker push image'
