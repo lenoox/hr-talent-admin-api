@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
-import {LocationEntity} from "./entities/location.entity";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LocationEntity } from './entities/location.entity';
 
 @Injectable()
 export class LocationsService {
-    constructor(
-        @InjectRepository(LocationEntity)
-        private locationsRepository: Repository<LocationEntity>,
-    ) {}
+  constructor(
+    @InjectRepository(LocationEntity)
+    private locationsRepository: Repository<LocationEntity>,
+  ) {}
 
-    findAll() {
-        return this.locationsRepository.find();
-    }
+  findAll() {
+    return this.locationsRepository.find();
+  }
 
-    findOne(id: string) {
-        return this.locationsRepository.findOneBy({id});
-    }
+  findOne(id: string) {
+    return this.locationsRepository.findOneBy({ id });
+  }
 }
