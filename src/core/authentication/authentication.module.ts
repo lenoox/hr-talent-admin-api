@@ -13,12 +13,7 @@ import { TwoFactorAuthenticationService } from './two-factor/two-factor-authenti
 import { JwtTwoFactorStrategy } from './jwt-two-factor.strategy';
 
 @Module({
-  imports: [
-    UsersModule,
-    PassportModule,
-    ConfigModule,
-    JwtModule.register({})
-  ],
+  imports: [UsersModule, PassportModule, ConfigModule, JwtModule.register({})],
   providers: [
     AuthenticationService,
     LocalStrategy,

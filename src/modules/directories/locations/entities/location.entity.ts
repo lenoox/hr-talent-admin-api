@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('locations')
 export class LocationEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ name: 'location_key', nullable: false })
@@ -10,5 +10,4 @@ export class LocationEntity {
 
   @Column({ name: 'location_name', nullable: false })
   name: string;
-
 }

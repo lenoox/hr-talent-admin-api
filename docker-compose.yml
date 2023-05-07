@@ -1,7 +1,7 @@
 services:
   api:
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.local
       context: .
       target: development
     volumes:

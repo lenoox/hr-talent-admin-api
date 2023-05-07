@@ -1,11 +1,18 @@
-import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {LocationEntity} from "../../directories/locations/entities/location.entity";
-import {StatusEntity} from "../../directories/statuses/entities/status.entity";
-import {JobOfferEntity} from "../../job-offers/entities/job-offer.entity";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { LocationEntity } from '../../directories/locations/entities/location.entity';
+import { StatusEntity } from '../../directories/statuses/entities/status.entity';
+import { JobOfferEntity } from '../../job-offers/entities/job-offer.entity';
 
 @Entity('candidates')
 export class CandidateEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ name: 'first_name', nullable: false })
@@ -14,9 +21,9 @@ export class CandidateEntity {
   @Column({ name: 'last_name', nullable: false })
   lastName: string;
 
-  @ManyToOne(() => LocationEntity,{ cascade: true, eager: true})
+  @ManyToOne(() => LocationEntity, { cascade: true, eager: true })
   @JoinTable()
-  locations: LocationEntity[]
+  locations: LocationEntity[];
 
   @Column({ name: 'position', nullable: false })
   position: string;
@@ -27,14 +34,16 @@ export class CandidateEntity {
   @Column({ name: 'about_me', nullable: false })
   aboutMe: string;
 
-  @ManyToOne(() => StatusEntity, (user) => user.statuses,{ cascade: true, eager: true})
-  status: StatusEntity
+  @ManyToOne(() => StatusEntity, (user) => user.statuses, {
+    cascade: true,
+    eager: true,
+  })
+  status: StatusEntity;
 
-  @ManyToMany(
-      () => JobOfferEntity,
-      (jobOffer) => jobOffer.id,
-      {cascade: true, eager: true}
-  )
+  @ManyToMany(() => JobOfferEntity, (jobOffer) => jobOffer.id, {
+    cascade: true,
+    eager: true,
+  })
   @JoinTable()
   jobOffer: JobOfferEntity[];
 }

@@ -9,17 +9,19 @@ import { TokenPayload } from './token-payload.interface';
 @Injectable()
 export class JwtTwoFactorStrategy extends PassportStrategy(
   Strategy,
-  'jwt-two-factor'
+  'jwt-two-factor',
 ) {
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UsersService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([(request: Request) => {
-        return request?.cookies?.Authentication;
-      }]),
-      secretOrKey: configService.get('JWT_ACCESS_TOKEN_SECRET')
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request: Request) => {
+          return request?.cookies?.Authentication;
+        },
+      ]),
+      secretOrKey: configService.get('JWT_ACCESS_TOKEN_SECRET'),
     });
   }
 

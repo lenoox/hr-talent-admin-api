@@ -8,33 +8,40 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TwoFactorAuthenticationService {
-  constructor (
+  constructor(
     private readonly usersService: UsersService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {}
 
   public async generateTwoFactorAuthenticationSecret(user: User) {
     const secret = authenticator.generateSecret();
 
-    const otpauthUrl = authenticator.keyuri(user.email, this.configService.get('TWO_FACTOR_AUTHENTICATION_APP_NAME'), secret);
+    const otpauthUrl = authenticator.keyuri(
+      user.email,
+      this.configService.get('TWO_FACTOR_AUTHENTICATION_APP_NAME'),
+      secret,
+    );
 
     await this.usersService.setTwoFactorAuthenticationSecret(secret, user.id);
 
     return {
       secret,
-      otpauthUrl
-    }
+      otpauthUrl,
+    };
   }
 
-  public isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: User) {
+  public isTwoFactorAuthenticationCodeValid(
+    twoFactorAuthenticationCode: string,
+    user: User,
+  ) {
     return authenticator.verify({
       token: twoFactorAuthenticationCode,
-      secret: user.twoFactorAuthenticationSecret
-    })
+      secret: user.twoFactorAuthenticationSecret,
+    });
   }
 
   public async pipeQrCodeStream(stream: Response, otpauthUrl: string) {
-    stream.setHeader('content-type','image/png');
+    stream.setHeader('content-type', 'image/png');
     return toFileStream(stream, otpauthUrl);
   }
 }

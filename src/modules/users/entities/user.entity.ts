@@ -20,7 +20,7 @@ export class User {
   public password: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   @Exclude()
   public currentHashedRefreshToken?: string;
