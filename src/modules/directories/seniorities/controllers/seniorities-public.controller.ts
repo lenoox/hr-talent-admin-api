@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { SenioritiesService } from '../seniorities.service';
 import { SeniorityEntity } from '../entities/seniority.entity';
 
-@Controller('directories/seniorities')
+@Controller('/public/directories/seniorities')
 export class SenioritiesPublicController {
   constructor(private senioritiesService: SenioritiesService) {}
   @Get('/')
