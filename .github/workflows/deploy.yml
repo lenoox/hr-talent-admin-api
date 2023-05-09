@@ -4,7 +4,7 @@ jobs:
   deploy:
     name: 'Deploy hr-talent-admin-api'
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop'
     env:
       PROFILE_ACTIVE: prod
       GCP_CREDENTIALS: '${{ secrets.GCP_CREDENTIALS }}'
@@ -41,19 +41,19 @@ jobs:
         run: gcloud auth configure-docker
       - name: Generate Image Tag
         run: |
-          echo "IMAGE=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:${GITHUB_SHA::8}" >> $GITHUB_ENV
+          echo "IMAGE_URL=${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.APP_NAME }}/${{ secrets.APP_NAME }}:${GITHUB_SHA::8}" >> $GITHUB_ENV
       - name: 'Build image'
-        run: docker build --tag $IMAGE .
+        run: docker build --tag $IMAGE_URL .
       - name: 'Docker push image'
         run: |-
           gcloud auth configure-docker $REPOSITRORY
-          docker push "$IMAGE"
+          docker push "$IMAGE_URL"
       - name: 'Deploy project'
         run: |-
           gcloud compute instances update-container $APP_NAME \
           --container-restart-policy=always \
           --zone $INSTANCE_ZONE \
-          --container-image $IMAGE \
+          --container-image $IMAGE_URL \
           --container-env POSTGRES_HOST="$POSTGRES_HOST" \
           --container-env POSTGRES_PORT="$POSTGRES_PORT" \
           --container-env POSTGRES_USER="$POSTGRES_USER" \
