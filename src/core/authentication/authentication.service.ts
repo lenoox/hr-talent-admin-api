@@ -73,7 +73,7 @@ export class AuthenticationService {
 
   public getCookiesForLogOut() {
     return [
-      'Authentication=; SameSite=None; HttpOnly; Path=/; Max-Age=0',
+      'Authentication=; SameSite=None; Secure; HttpOnly; Path=/; Max-Age=0',
       'Refresh=; SameSite=None; Secure; HttpOnly; Path=/; Max-Age=0',
     ];
   }

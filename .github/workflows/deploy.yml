@@ -4,7 +4,7 @@ jobs:
   deploy:
     name: 'Deploy hr-talent-admin-api'
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop'
     env:
       PROFILE_ACTIVE: prod
       GCP_CREDENTIALS: '${{ secrets.GCP_CREDENTIALS }}'
