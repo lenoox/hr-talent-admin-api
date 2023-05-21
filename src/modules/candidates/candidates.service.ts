@@ -42,6 +42,7 @@ export class CandidatesService {
   ): Promise<CandidateResponse> {
     const eventDataEntity = await this.candidatesMapper.dtoToEntity(
       eventData,
+      null,
       true,
       jobOfferId,
     );
@@ -61,13 +62,13 @@ export class CandidatesService {
   ): Promise<CandidateResponse> {
     candidateRequest.id = id;
     const candidate = await this.candidatesRepository.findOneBy({ id });
-    const jobOfferEntity = this.candidatesMapper.dtoToEntity(
+    const jobOfferEntity = await this.candidatesMapper.dtoToEntity(
       candidateRequest,
+      candidate,
       false,
     );
-    Object.assign(candidate, jobOfferEntity);
     return await this.candidatesRepository
-      .save(candidate)
+      .save(jobOfferEntity)
       .then((jobOffer: CandidateEntity) =>
         this.candidatesMapper.entityToDto(jobOffer),
       );

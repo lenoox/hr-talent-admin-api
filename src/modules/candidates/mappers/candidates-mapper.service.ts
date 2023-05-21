@@ -14,16 +14,25 @@ export class CandidatesMapper {
   ) {}
   async dtoToEntity(
     jobOfferRequest: CandidateRequest,
+    candidate,
     isPublic,
     id: string = null,
-  ): Promise<any> {
+  ): Promise<CandidateEntity> {
+    let jobOffer;
     const status = await this.statusesService.findByName('APPLIED');
-    const jobOffer = {
-      ...jobOfferRequest,
-      locations: jobOfferRequest.locations,
-      status: { id: isPublic ? status.id : jobOfferRequest.status },
-      jobOffer: [{ id }],
-    };
+    if (isPublic) {
+      jobOffer = {
+        ...jobOfferRequest,
+        locations: jobOfferRequest.locations,
+        status: { id: status.id },
+        jobOffer: [{ id }],
+      };
+    } else {
+      jobOffer = {
+        ...candidate,
+        status: { id: jobOfferRequest.status },
+      };
+    }
     return jobOffer;
   }
 
