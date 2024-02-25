@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 import * as fs from 'fs';
 import * as express from 'express';
 import * as http from 'http';
 import * as https from 'https';
 import { ExpressAdapter } from '@nestjs/platform-express';
+
 async function bootstrap() {
   try {
     const keyPath = process.env.SSL_KEY_PATH || '';
@@ -28,6 +28,7 @@ async function bootstrap() {
         logger: ['error', 'warn', 'log'],
       },
     );
+    console.log(`Load key path ${process.env.FRONTEND_URLS}`);
     console.log(`Load key path ${keyPath}`);
     console.log(`Load cert path ${certPath}`);
     app.use(cookieParser());

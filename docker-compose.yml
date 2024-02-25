@@ -1,5 +1,6 @@
 services:
   api:
+    container_name: hr-talent-admin-api
     build:
       dockerfile: Dockerfile.local
       context: .
@@ -17,7 +18,7 @@ services:
     depends_on:
       - database
   database:
-    container_name: db
+    container_name: hr-talent-db
     image: postgres:13-bullseye
     restart: always
     environment:
